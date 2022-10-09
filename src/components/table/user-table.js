@@ -1,33 +1,47 @@
 import React from 'react';
-import {Dimensions, ScrollView, View, Text, StyleSheet} from 'react-native';
-
+import {Dimensions, ScrollView, View, Text, StyleSheet,Alert } from 'react-native';
+import {useSelector} from 'react-redux';
+import Api from '../../service/api';
 let ScreenHeight = Dimensions.get('window').height;
 
-const arrayLen = 10;
+const UserRow = ({user}) => {
+  return (
+    <View key={user.uid + '_key'} style={styles.row}>
+      <Text style={{color: user.isFound === true ? 'red' :'black'}}>{user.name}</Text>
+      <Text>{user.rank}</Text>
+      <Text>{user.bananas}</Text>
+      <Text>{user.isFound === true ? 'Yes' : 'No'}</Text>
+    </View>
+  );
+};
 
 const UserTable = () => {
-    
-  const scrollHeihgt =
-    50 * arrayLen > ScreenHeight - 120
-      ? ScreenHeight - 120 + 50
-      : 50 * arrayLen + 50;
+  const [top10, setTop10] = React.useState([]);
+  
+  const searchKey = useSelector(state => state.searchKey.searchKey);
+  
 
+  React.useEffect(() => {
+    const {users, isFound} = Api.searchUser(searchKey);
+    if (!isFound && searchKey) {
+
+        Alert.alert('Not found',"This user name does not exist! Please specify an existing user name.")
+    }
+    setTop10(users)
+
+  }, [searchKey]);
+
+  
   return (
-    <View style={{height: scrollHeihgt, padding: 10}}>
+    <View style={{height: Math.min(ScreenHeight - 120 + 50, 50 * top10.length + 50), padding: 10}}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{paddingBottom: 30}}>
-        {Array(arrayLen)
-          .fill(1)
-          .map((one, index) => {
-            return (
-              <View key={index + '_key'} style={styles.row}>
-                <Text>User name</Text>
-                <Text>User Email</Text>
-                <Text>User Age</Text>
-              </View>
-            );
-          })}
+        {top10.map((user, index) => {
+          return (
+            <UserRow key={index + '_key'} user={user}/>
+          );
+        })}
       </ScrollView>
     </View>
   );

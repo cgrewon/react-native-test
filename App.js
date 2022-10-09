@@ -10,18 +10,18 @@ import React from 'react';
 import {
   Dimensions,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   useColorScheme,
   View,
-  Text,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import SearchInput from './src/components/search/search-input';
 import UserTable from './src/components/table/user-table';
+import {Provider} from 'react-redux';
+import configureStore from './src/state/store';
 
 let ScreenHeight = Dimensions.get('window').height;
 
@@ -32,20 +32,18 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View
-        style={styles.mainContainer}>
-        <SearchInput />
-        <UserTable/>
-      </View>
-    </SafeAreaView>
+    <Provider store={configureStore}>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <View style={styles.mainContainer}>
+          <SearchInput />
+          <UserTable />
+        </View>
+      </SafeAreaView>
+    </Provider>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -54,6 +52,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
   },
-})
+});
 
 export default App;

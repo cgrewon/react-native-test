@@ -1,0 +1,1 @@
+export const UPDATE_SEARCH_KEY = "UPDATE_SEARCH_KEY";

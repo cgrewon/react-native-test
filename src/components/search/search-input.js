@@ -9,19 +9,28 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateSearchKey } from '../../state/actions';
 
 const SearchInput = () => {
+  const dispatch = useDispatch()
+  const searchKey  = useSelector(state=>state.searchKey.searchKey)
+  const [searchText, setSearchText] = React.useState('')
 
   const onPress = () => {
-    Alert.alert('Button with adjusted color pressed');
+    dispatch(updateSearchKey(searchText))
   };
 
+  const handleChange = (val)=>{
+
+    setSearchText(val)
+  }
   return (
     <View style={styles.inputContainer}>
       <View
         style={styles.searchTextBox}>
         <Icon name="search" size={28} color="#8A9B68" />
-        <TextInput style={styles.searchInput}></TextInput>
+        <TextInput style={styles.searchInput} value={searchText} onChangeText={handleChange}></TextInput>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onPress}>
