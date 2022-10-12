@@ -37,5 +37,5 @@ $ yarn ios
 
 <hr/>
 
-![screenshot](https://github.com/cgrewon/react-native-test/Screenshot.png)
+![screenshot](https://github.com/cgrewon/react-native-test/blob/main/Screenshot.png)
 
