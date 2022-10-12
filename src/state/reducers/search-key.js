@@ -1,9 +1,9 @@
-import { UPDATE_SEARCH_KEY} from '../action_types';
+import { UPDATE_SEARCH_KEY, UPDATE_TOP10_USERS} from '../action_types';
 
 
 const initialState = {
   searchKey: null,
-  
+  top10Users: [],
 };
 
 const SearchKeyReducer = (state = initialState, action) => {
@@ -14,7 +14,13 @@ const SearchKeyReducer = (state = initialState, action) => {
             ...state,
             searchKey: action.payload
         }
-        break;
+        
+    case UPDATE_TOP10_USERS:
+        return {
+            ...state,
+            top10Users: [...action.payload]
+        }
+        
     default :
         return state;
   }
